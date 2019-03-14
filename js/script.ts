@@ -3,6 +3,7 @@ const head: THREE.Object3D = new THREE.Object3D();
 const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(70, window.innerHeight / window.innerWidth, 0.01, 500);
 const scene: THREE.Scene = new THREE.Scene();
 const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ antialias: true });
+const dummySphere: THREE.Object3D = new THREE.Object3D();
 
 $(document).ready(() => {
   setupThree();
@@ -14,7 +15,7 @@ $(document).ready(() => {
 const getCamera = function () {
   const constraints: MediaStreamConstraints = {
     audio: false,
-    video: true
+    video: { width: 800, height: 600 }
   };
 
   navigator.mediaDevices.getUserMedia(constraints).then(stream => {
@@ -57,6 +58,7 @@ const onWindowResize = function () {
 }
 
 const render = function () {
+  updateDummySphere();
   // 首座標固定（回転のみする）
   head.position.set(-camera.position.x, -camera.position.y, -camera.position.z);
   // メインの描画
@@ -69,7 +71,8 @@ const createDummySphere = function (video: HTMLVideoElement) {
   texture.magFilter = THREE.LinearFilter;
   texture.format = THREE.RGBFormat;
 
-  const planeGeometry = new THREE.PlaneGeometry(4, 3, 1, 1);
+  const planeScale = 6.6; //********************************** */
+  const planeGeometry = new THREE.PlaneGeometry(4 * planeScale, 3 * planeScale, 1, 1); //******************************************** */
   const planeMaterial = new THREE.MeshBasicMaterial({
     color: 0xffffff,
     map: texture,
@@ -80,13 +83,21 @@ const createDummySphere = function (video: HTMLVideoElement) {
     depthWrite: false
   });
   const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
-  planeMesh.position.set(0, 0, -4);
-  scene.add(planeMesh);
+  planeMesh.position.set(0, 0, -20);  //***************************************** */
+
+  dummySphere.add(planeMesh);
+  scene.add(dummySphere);
+  // camera.add(planeMesh);
+  // scene.add(planeMesh);
 
   // const sphereGeometry = new THREE.SphereGeometry(2, 10, 10);
   // const sphereMesh = new THREE.Mesh(sphereGeometry, planeMaterial);
   // sphereMesh.position.set(0, 0, -10);
   // scene.add(sphereMesh);
+}
+
+const updateDummySphere = function () {
+  dummySphere.quaternion.copy(camera.quaternion);
 }
 
 let vrdisplay: VRDisplay = null;
@@ -132,5 +143,14 @@ const setupKeyEvent = function () {
     if (e.key == 'v') {
       toggleVR();
     }
+    if (e.key == 'r') {
+      checkResolution();
+    }
   });
+}
+
+const checkResolution = function () {
+  const myVideo = (<HTMLVideoElement>$('#my-video').get(0));
+  console.log("width : " + myVideo.videoWidth);
+  console.log("height: " + myVideo.videoHeight);
 }
