@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>SimpleWebRTCVR - Remote</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    #config {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: antiquewhite;
+      opacity: 0.5;
+      z-index: 2;
+    }
+
+    #my-id,
+    #their-id {
+      font-weight: bold;
+    }
+
+    #my-video {
+
+    }
+
+    video {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/92/three.min.js"></script>
+  <script type="module" src="./js/script.js"></script>
+  <script src="js/lib/WebVR.js"></script>
+
+  <!-- <video id="my-video" muted="true" autoplay></video> -->
+
+  <div id="main"></div>
+  <div id="config">
+    <video id="my-video" autoplay width="480" height="270"></video>
+  </div>
+</body>
+
+</html>
